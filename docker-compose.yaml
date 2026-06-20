@@ -1,0 +1,21 @@
+
+services:
+  ollama:
+    image: ollama/ollama
+    ports: 
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    command: ["serve"]
+
+  bot:
+    image: pdf_bot_image
+    depends_on:
+      - ollama
+    volumes:
+      - ./bot:/app
+    working_dir: /app
+    command: python3 bot.py
+volumes:
+  ollama:
+    external: true
